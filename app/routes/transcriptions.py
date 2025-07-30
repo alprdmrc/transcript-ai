@@ -3,6 +3,9 @@ from pydantic import BaseModel, HttpUrl
 from worker.celery_app import celery_app
 from celery.result import AsyncResult
 
+from app.db import SessionLocal
+from app.models import TranscriptionJob, JobStatus
+
 router = APIRouter(tags=["transcriptions"])
 
 
@@ -21,6 +24,14 @@ def create_transcription(req: TranscriptionRequest):
         "worker.tasks.transcribe_task",
         kwargs={"audio_url": str(req.audio_url), "metadata": req.metadata or {}},
     )
+    with SessionLocal() as db:
+        db.add(TranscriptionJob(
+            job_id=async_res.id,
+            audio_url=str(req.audio_url),
+            status=JobStatus.queued,
+            request_metadata=req.metadata or {},
+        ))
+        db.commit()
     return {"job_id": async_res.id, "status": "queued"}
 
 

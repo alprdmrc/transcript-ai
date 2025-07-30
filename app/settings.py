@@ -17,13 +17,15 @@ class Settings(BaseSettings):
     AUTH_JWT_AUD: str | None = None
     AUTH_JWKS_URL: str | None = None
 
+    DATABASE_URL: str = "sqlite:///./data/app.db"  
+    
     # WhisperX config
     WHISPERX_DEVICE: str | None = None
-    WHISPERX_MODEL_NAME: str | None = None   # try "small" or "base" if memory tight
+    WHISPERX_MODEL_NAME: str | None = None  
     WHISPERX_COMPUTE_TYPE: str | None = None # "float16" on mps/cuda, "int8" on cpu ## "float32","float16","int8",...
     WHISPERX_ENABLE_ALIGNMENT: bool = True
     WHISPERX_ENABLE_DIARIZATION: bool = False  # pyannote is heavy; keep off for MVP
-    HUGGINGFACE_TOKEN: str | None = None  # needed if you later enable diarization
+    HUGGINGFACE_TOKEN: str | None = None  
 
     class Config:
         env_file = ".env"

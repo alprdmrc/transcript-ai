@@ -63,6 +63,9 @@ temp_audio/
 # Database files (if using a local SQLite DB for testing)
 #########################################################
 *.db
+*.db-journal
+*.db-shm
+*.db-wal
 *.sqlite
 *.sqlite3
 
