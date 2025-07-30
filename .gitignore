@@ -1,0 +1,86 @@
+# .gitignore for whisperx-svc project
+
+# Python specific ignores
+#########################
+# Byte-code files
+*.pyc
+__pycache__/
+.Python/
+build/
+dist/
+*.egg-info/
+.env/
+venv/
+env/
+.env
+.venv311/
+# Environments (common names for virtual environments)
+# If you use a different name for your virtual environment, add it here.
+# e.g., myenv/
+
+# Editor/IDE specific files
+###########################
+# Visual Studio Code
+.vscode/
+# Add other IDE specific folders if you use them (e.g., .idea/ for PyCharm)
+# .idea/
+
+# Operating System files
+########################
+.DS_Store # macOS
+Thumbs.db # Windows
+ehthumbs.db # Windows
+*.stackdump # Windows
+*.log # General log files (Celery logs, application logs)
+logs/ # Directory for logs
+
+# Environment variables
+#######################
+.env # Contains sensitive environment variables (e.g., API keys, connection strings)
+!.env.example # Keep the example file in version control
+
+# Celery specific ignores
+#########################
+# Celery beat schedule file (if using persistent beat schedule)
+celerybeat-schedule
+celerybeat.pid
+
+# Temporary files or caches
+###########################
+*.tmp
+*.bak
+*.swp # Vim swap files
+*.swo # Vim swap files
+
+# Data files (if generated locally and not meant for version control)
+#####################################################################
+# If WhisperX downloads audio files to a local directory for processing,
+# and these are not meant to be committed to Git.
+# Example: a 'downloads' or 'temp_audio' folder
+downloads/
+temp_audio/
+
+# Database files (if using a local SQLite DB for testing)
+#########################################################
+*.db
+*.sqlite
+*.sqlite3
+
+# Azure related local/temporary files (e.g., Azurite emulator files)
+#####################################################################
+# If you use Azurite for local Azure Storage emulation
+__azurite_db_blob__.json
+__azurite_db_blob_extent__.json
+__azurite_db_queue__.json
+__azurite_db_queue_extent__.json
+__azurite_db_table__.json
+__blobstorage__
+__queuestorage__
+
+# Test related ignores
+######################
+.pytest_cache/
+.coverage
+htmlcov/
+.nox/
+.mypy_cache/

@@ -1,0 +1,56 @@
+from pydantic_settings import BaseSettings
+from pydantic import AnyUrl
+
+
+class Settings(BaseSettings):
+    # FastAPI
+    APP_NAME: str = "whisperx-transcription"
+    API_PREFIX: str = "/v1"
+
+    # Celery / Redis
+    REDIS_URL: AnyUrl = "redis://localhost:6379/0"
+    CELERY_BROKER_URL: AnyUrl | None = None
+    CELERY_RESULT_BACKEND: AnyUrl | None = None
+
+    # Security (MVP placeholders)
+    AUTH_JWT_ISS: str | None = None
+    AUTH_JWT_AUD: str | None = None
+    AUTH_JWKS_URL: str | None = None
+
+    # WhisperX config
+    WHISPERX_DEVICE: str | None = None
+    WHISPERX_MODEL_NAME: str | None = None   # try "small" or "base" if memory tight
+    WHISPERX_COMPUTE_TYPE: str | None = None # "float16" on mps/cuda, "int8" on cpu ## "float32","float16","int8",...
+    WHISPERX_ENABLE_ALIGNMENT: bool = True
+    WHISPERX_ENABLE_DIARIZATION: bool = False  # pyannote is heavy; keep off for MVP
+    HUGGINGFACE_TOKEN: str | None = None  # needed if you later enable diarization
+
+    class Config:
+        env_file = ".env"
+
+
+settings = Settings()
+# Default Celery endpoints to REDIS_URL if not set explicitly
+if settings.CELERY_BROKER_URL is None:
+    settings.CELERY_BROKER_URL = settings.REDIS_URL
+if settings.CELERY_RESULT_BACKEND is None:
+    settings.CELERY_RESULT_BACKEND = settings.REDIS_URL
+
+# Detect device
+# def default_device() -> str:
+#     try:
+#         import torch
+#         if torch.backends.mps.is_available():
+#             return "cuda"
+#     except Exception:
+#         pass
+#     return "cpu"
+
+# DEVICE = default_device()
+
+# def _resolve_compute_type(device: str) -> str:
+#     # float16 only makes sense on CUDA; use float32 on CPU
+#     print("type to resolve", device)
+#     return "float16" if device == "cuda" else "float32"
+
+# COMPUTE_TYPE = _resolve_compute_type(DEVICE)
