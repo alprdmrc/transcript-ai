@@ -1,0 +1,17 @@
+# --- API / Web ---
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+
+# --- Settings & typing ---
+pydantic==2.8.2
+pydantic-settings==2.4.0
+
+# --- DB & migrations ---
+SQLAlchemy==2.0.32
+alembic==1.13.2
+mysql-connector-python==8.4.0
+
+# --- Queue client / HTTP ---
+redis==5.0.8
+httpx==0.27.0
+celery==5.4.0

@@ -1,6 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, HttpUrl
-from worker.celery_app import celery_app
+# from worker.celery_app import celery_app
+from app.celery_client import celery_app
 from celery.result import AsyncResult
 
 from app.db import SessionLocal
