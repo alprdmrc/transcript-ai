@@ -43,7 +43,7 @@ jobs:
       - name: Deploy to AKS
         run: |
           kubectl delete secret humanas-transcription-secrets --ignore-not-found
-          kubectl rollout restart deployment humanas-transcription-deployment --ignore-not-found
+          kubectl rollout restart deployment humanas-transcription-api
 
       # 7. deployment job
       - name: Run artisan deployment job
