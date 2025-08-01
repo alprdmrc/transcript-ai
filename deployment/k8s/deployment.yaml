@@ -1,0 +1,31 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: humanas-transcription-deployment
+  namespace: default
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      containers:
+        - name: humanas-transcription-deployment
+          imagePullPolicy: Always
+          image: humanascontainerregistry.azurecr.io/humanas-transcription-api:test
+          command: ["alembic", "upgrade", "head"]
+          envFrom:
+            - configMapRef:
+                name: humanas-transcription-config
+            - secretRef:
+                name: humanas-transcription-secrets
+          volumeMounts:
+            - name: secrets-store-inline
+              mountPath: "/mnt/secrets-store"
+              readOnly: true
+      volumes:
+        - name: secrets-store-inline
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: humanas-transcription-kv-provider
+      restartPolicy: Never

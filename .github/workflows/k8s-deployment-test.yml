@@ -1,0 +1,55 @@
+name: Deploy Transcription API to AKS TEST
+
+on:
+  push:
+    branches:
+      - test
+
+env:
+  IMAGE_NAME: humanas-transcription-api
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Repo'yu checkout et
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. Azure login
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      # 3. ACR login
+      - name: ACR Login
+        run: |
+          az acr login --name ${{ secrets.ACR_NAME }}
+
+      # 4. Docker image build & push
+      - name: Build and push Docker image
+        run: |
+          docker build -t ${{ secrets.ACR_NAME }}.azurecr.io/humanas-transcription-api:test .
+          docker push ${{ secrets.ACR_NAME }}.azurecr.io/humanas-transcription-api:test
+
+      # 5. AKS kubeconfig al
+      - name: Set up AKS context
+        run: |
+          az aks get-credentials --resource-group ${{ secrets.AKS_RESOURCE_GROUP_TEST }} --name ${{ secrets.AKS_CLUSTER_NAME_TEST }} --overwrite-existing
+
+      # 6. Kubernetes deployment güncelle
+      - name: Deploy to AKS
+        run: |
+          kubectl delete secret humanas-transcription-secrets --ignore-not-found
+          kubectl rollout restart deployment humanas-transcription-deployment
+
+      # 7. deployment job
+      - name: Run artisan deployment job
+        run: |
+          kubectl delete job humanas-transcription-deployment --ignore-not-found
+          kubectl apply -f deployment/k8s/deployment.yaml
+          kubectl wait --for=condition=complete --timeout=180s job/humanas-transcription-deployment || \
+          kubectl wait --for=condition=failed --timeout=10s job/humanas-transcription-deployment
+          kubectl delete job humanas-transcription-deployment --ignore-not-found
