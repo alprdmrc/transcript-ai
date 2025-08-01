@@ -37,9 +37,10 @@ class Settings(BaseSettings):
     @property
     def DATABASE_URL(self) -> str:
         return (
-            f"mysql+pymysql://{self.DB_USERNAME}:{self.DB_PASSWORD}"
+            f"mysql+mysqlconnector://{self.DB_USERNAME}:{self.DB_PASSWORD}"
             f"@{self.DB_HOST}:{self.DB_PORT}/{self.DB_SCHEMA}"
         )
+
 
 
 settings = Settings()
