@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
+ENV PYTHONPATH=/app
 
 COPY requirements-worker.txt ./
 RUN pip install -U pip && pip install -r requirements-worker.txt
