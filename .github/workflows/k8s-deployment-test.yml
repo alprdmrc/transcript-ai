@@ -55,8 +55,8 @@ jobs:
       # 7. deployment job
       - name: Run artisan deployment job
         run: |
-          kubectl delete job humanas-transcription-deployment --ignore-not-found
+          kubectl delete job humanas-transcription-api-deployment --ignore-not-found
           kubectl apply -f deployment/k8s/deployment.yaml
-          kubectl wait --for=condition=complete --timeout=180s job/humanas-transcription-deployment || \
-          kubectl wait --for=condition=failed --timeout=10s job/humanas-transcription-deployment
-          kubectl delete job humanas-transcription-deployment --ignore-not-found
+          kubectl wait --for=condition=complete --timeout=180s job/humanas-transcription-api-deployment || \
+          kubectl wait --for=condition=failed --timeout=10s job/humanas-transcription-api-deployment
+          kubectl delete job humanas-transcription-api-deployment --ignore-not-found
