@@ -28,11 +28,17 @@ jobs:
         run: |
           az acr login --name ${{ secrets.ACR_NAME }}
 
-      # 4. Docker image build & push
-      - name: Build and push Docker image
+      # 4. Docker image build & push for api
+      - name: Build and push Docker image for api
         run: |
-          docker build -t ${{ secrets.ACR_NAME }}.azurecr.io/humanas-transcription-api:test .
+          docker build -f deployment/docker/Dockerfile.api -t ${{ secrets.ACR_NAME }}.azurecr.io/humanas-transcription-api:test .
           docker push ${{ secrets.ACR_NAME }}.azurecr.io/humanas-transcription-api:test
+
+      # 4. Docker image build & push for worker
+      - name: Build and push Docker image for worker
+        run: |
+          docker build -f deployment/docker/Dockerfile.worker -t ${{ secrets.ACR_NAME }}.azurecr.io/humanas-transcription-worker:test .
+          docker push ${{ secrets.ACR_NAME }}.azurecr.io/humanas-transcription-worker:test
 
       # 5. AKS kubeconfig al
       - name: Set up AKS context
@@ -44,6 +50,7 @@ jobs:
         run: |
           kubectl delete secret humanas-transcription-secrets --ignore-not-found
           kubectl rollout restart deployment humanas-transcription-api
+          kubectl rollout restart deployment humanas-transcription-worker
 
       # 7. deployment job
       - name: Run artisan deployment job

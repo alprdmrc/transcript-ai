@@ -1,14 +1,14 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: humanas-transcription-deployment
+  name: humanas-transcription-api-deployment
   namespace: default
 spec:
   backoffLimit: 0
   template:
     spec:
       containers:
-        - name: humanas-transcription-deployment
+        - name: humanas-transcription-api-deployment
           imagePullPolicy: Always
           image: humanascontainerregistry.azurecr.io/humanas-transcription-api:test
           command: ["alembic", "upgrade", "head"]
