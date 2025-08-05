@@ -2,8 +2,8 @@ from pathlib import Path
 import httpx
 from urllib.parse import urlparse
 
-# VERY simple allowlist; expand later (SAS links, S3, etc.)
-ALLOWED_HOSTS = {"humanaswhisperxfilestest.blob.core.windows.net"}
+# VERY simple allowlist
+ALLOWED_HOSTS = {"humanascontentstrgtest.blob.core.windows.net"}
 
 def _check_allowlist(url: str) -> None:
     host = urlparse(url).hostname or ""
@@ -20,6 +20,3 @@ def download_to_tmp(url: str, job_id: str, tmp_dir: Path = Path("data/tmp")) -> 
             for chunk in r.iter_bytes():
                 f.write(chunk)
     return target
-
-
-## https://humanaswhisperxfilestest.blob.core.windows.net/audiofiles/sampleaudio.mp4

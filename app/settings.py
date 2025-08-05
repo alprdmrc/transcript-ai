@@ -7,6 +7,9 @@ class Settings(BaseSettings):
     APP_NAME: str = "whisperx-transcription"
     API_PREFIX: str = "/v1"
 
+    # Humanas BE
+    MAIN_BACKEND_URL: str | None = None
+
     # Celery / Redis
     REDIS_URL: AnyUrl = "redis://localhost:6379/0"
     CELERY_BROKER_URL: AnyUrl | None = None
@@ -26,6 +29,10 @@ class Settings(BaseSettings):
     WHISPERX_ENABLE_ALIGNMENT: bool = True
     WHISPERX_ENABLE_DIARIZATION: bool = False  # pyannote is heavy; keep off for MVP
     HUGGINGFACE_TOKEN: str | None = None  
+
+    # Azure Storage
+    AZURE_STORAGE_CONNECTION_STRING: str | None = None
+    AZURE_CONTAINER_NAME: str | None = None
 
     class Config:
         env_file = ".env"
