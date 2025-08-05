@@ -48,5 +48,6 @@ class TranscriptionJob(Base):
 
     error_message: Mapped[str | None] = mapped_column(Text, default=None)
 
+    user_info: Mapped[dict | None] = mapped_column(JSON, default=None)
     transcript_json: Mapped[dict | None] = mapped_column(JSON, default=None)
     result_blob_url: Mapped[str | None] = mapped_column(Text, default=None)
