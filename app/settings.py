@@ -1,7 +1,6 @@
 from pydantic_settings import BaseSettings
 from pydantic import AnyUrl
 
-
 class Settings(BaseSettings):
     # FastAPI
     APP_NAME: str = "whisperx-transcription"
@@ -20,8 +19,13 @@ class Settings(BaseSettings):
     AUTH_JWT_AUD: str | None = None
     AUTH_JWKS_URL: str | None = None
 
-    DATABASE_URL: str = "sqlite:///./data/app.db"  
-    
+    # Database settings for MySQL
+    DB_HOST: str = "localhost"
+    DB_PORT: int = 3306
+    DB_SCHEMA: str = "app"
+    DB_USERNAME: str = "user"
+    DB_PASSWORD: str = "password"
+
     # WhisperX config
     WHISPERX_DEVICE: str | None = None
     WHISPERX_MODEL_NAME: str | None = None  
@@ -36,6 +40,14 @@ class Settings(BaseSettings):
 
     class Config:
         env_file = ".env"
+
+    @property
+    def DATABASE_URL(self) -> str:
+        return (
+            f"mysql+mysqlconnector://{self.DB_USERNAME}:{self.DB_PASSWORD}"
+            f"@{self.DB_HOST}:{self.DB_PORT}/{self.DB_SCHEMA}"
+        )
+
 
 
 settings = Settings()
