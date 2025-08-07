@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from app.db import Base, engine
 from app.settings import settings
 from app.routes.transcriptions import router as transcriptions_router
@@ -18,6 +19,15 @@ async def lifespan(app: FastAPI):
     engine.dispose()
 
 app = FastAPI(title=settings.APP_NAME, lifespan=lifespan)
+
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173","https://admintest.humanas.io/"],  # Add your React app's URL
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
+)
 
 @app.get("/")
 def root():
