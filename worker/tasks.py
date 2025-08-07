@@ -12,7 +12,7 @@ def transcribe_task(self, audio_url: str, metadata: dict):
     job_id = self.request.id
 
     # mark running
-    update_job(job_id, status=JobStatus.running, started_at=datetime.utcnow())
+    update_job(job_id, status=JobStatus.running, started_at=datetime.now(datetime.timezone.utc))
     try:
         # 1) Download
         self.update_state(state="STARTED", meta={"phase": "download"})
@@ -39,7 +39,7 @@ def transcribe_task(self, audio_url: str, metadata: dict):
         update_job(
             job_id,
             status=JobStatus.succeeded,
-            finished_at=datetime.utcnow(),
+            finished_at=datetime.now(datetime.timezone.utc),
             language=result.get("language"),
             duration_sec=total_duration_from_segments,
             model_name=result.get("model").get("name"),
@@ -54,7 +54,7 @@ def transcribe_task(self, audio_url: str, metadata: dict):
         update_job(
             job_id,
             status=JobStatus.failed,
-            finished_at=datetime.utcnow(),
+            finished_at=datetime.now(datetime.timezone.utc),
             error_message=str(e),
         )
         raise

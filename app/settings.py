@@ -15,9 +15,9 @@ class Settings(BaseSettings):
     CELERY_RESULT_BACKEND: AnyUrl | None = None
 
     # Security (MVP placeholders)
-    AUTH_JWT_ISS: str | None = None
-    AUTH_JWT_AUD: str | None = None
-    AUTH_JWKS_URL: str | None = None
+    # AUTH_JWT_ISS: str | None = None
+    # AUTH_JWT_AUD: str | None = None
+    # AUTH_JWKS_URL: str | None = None
 
     # Database settings for MySQL
     DB_HOST: str = "localhost"
