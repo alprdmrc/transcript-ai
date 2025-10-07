@@ -27,17 +27,17 @@ env/
 
 # Operating System files
 ########################
-.DS_Store # macOS
-Thumbs.db # Windows
-ehthumbs.db # Windows
-*.stackdump # Windows
-*.log # General log files (Celery logs, application logs)
-logs/ # Directory for logs
+.DS_Store
+Thumbs.db
+ehthumbs.db
+*.stackdump
+*.log
+logs
 
 # Environment variables
 #######################
-.env # Contains sensitive environment variables (e.g., API keys, connection strings)
-!.env.example # Keep the example file in version control
+.env
+!.env.example
 
 # Celery specific ignores
 #########################
